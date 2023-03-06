@@ -2,7 +2,7 @@
 # Jacked-Action
 Jacked provides organizations with a more comprehensive look at their application to take calculated actions and create a better security approach. Its primary purpose is to scan vulnerabilities to implement subsequent risk mitigation measures. 
 
-# Directory Scanning
+## Directory Scanning
 
 ```yaml
 name: Jacked Action
