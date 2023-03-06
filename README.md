@@ -14,8 +14,6 @@ jobs:
       matrix:
         os: [ubuntu-latest] # can add more os: windows-latest, macOS-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2 # repository that will be used for scanning
       - name: Run carbonetes/jacked # runs the github action of jacked
         uses: carbonetes/jacked@v1.0.0 # runs the github action using this version
         with: # user’s input reference for scanning options, results that jacked-action supported.
