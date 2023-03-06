@@ -8,26 +8,22 @@ Jacked provides organizations with a more comprehensive look at their applicatio
 # Installation 📥
 
 ```yaml
-# name: optional, title of the github action
-name: Jacked Scan
-# on: github action like pull-request, push, events
+name: Jacked Action
 on: [push, pull_request]
-# jobs: one or more
 jobs:
-  jacked: #jacked: is the custom name of the build:
+  jacked:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-
+        os: [ubuntu-latest] # can add more os: windows-latest, macOS-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Run carbonetes/jacked
-        uses: carbonetes/jacked@v1.0.0
-        with:
-          repository: <your-repository-url>
-          fail_on_vulnerability: true
+        uses: actions/checkout@v2 # repository that will be used for scanning
+      - name: Run carbonetes/jacked # runs the github action of jacked
+        uses: carbonetes/jacked@v1.0.0 # runs the github action using this version
+        with: # user’s input reference for scanning options, results that jacked-action supported.
+          fail_on_vulnerability: true # sample output reference: job fails when vulnerability found.
+
 ```
 
 ## License
