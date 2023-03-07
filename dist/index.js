@@ -14,9 +14,6 @@ async function downloadBinary() {
 }
   
 async function callBinary() {
-    // Download Binary
-    await downloadBinary();
-    
     // Call Binary
     console.log("Call Binary");
     exec('jacked', (error, stdout, stderr) => {
@@ -29,4 +26,5 @@ async function callBinary() {
     });
 }
   
+downloadBinary();
 callBinary();
