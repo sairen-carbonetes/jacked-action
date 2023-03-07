@@ -1,6 +1,6 @@
 const { exec } = require('child_process');
 
-async function downloadBinary() {
+function downloadBinary() {
     // Download Binary
     console.log("Download Binary");
     exec('curl -sSfL https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh | sh -s --', (error, stdout, stderr) => {
@@ -13,7 +13,7 @@ async function downloadBinary() {
     });
 }
   
-async function callBinary() {
+function callBinary() {
     // Call Binary
     console.log("Call Binary");
     exec('jacked', (error, stdout, stderr) => {
