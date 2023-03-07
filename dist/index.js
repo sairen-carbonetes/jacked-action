@@ -10,8 +10,8 @@ exec('curl -sSfL https://raw.githubusercontent.com/carbonetes/jacked/main/instal
 
 });
 
-downloadBinary()
-callBinary()
+downloadBinary();
+callBinary();
 
 function downloadBinary() {
     // Download binary
