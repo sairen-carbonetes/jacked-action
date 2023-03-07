@@ -3,7 +3,7 @@ const { execSync } = require('child_process');
 
 try {
     // download the carbonetes/jacked binary
-    execSync('curl -sSfL https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh | sh -s -- -d /usr/local/bin');
+    execSync('curl -sSfL https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh | sh -s --');
     execSync('jacked')
     console.log('Jacked binary installed.');
 } catch (error) {
