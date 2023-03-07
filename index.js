@@ -1,36 +1,41 @@
-const fetch = require('node-fetch');
-const fs = require('fs');
-const util = require('util');
-const writeFile = util.promisify(fs.writeFile);
-// NPM
 const core = require('@actions/core');
+const https = require('https');
+const fs = require('fs');
 const exec = require('@actions/exec');
-
-
-const cmdExec = require('node:child_process');
-
-// Get input
-const directory = core.getInput('directory', { required: true })
 
 async function run() {
     try {
-        // Download and install the script
-        const response = await fetch('https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh');
-        const script = await response.text();
+        // Download the script using https
+        const options = {
+            hostname: 'raw.githubusercontent.com',
+            path: '/carbonetes/jacked/main/install.sh',
+            method: 'GET'
+        };
+        const request = https.request(options, response => {
+            let script = '';
+            response.on('data', chunk => {
+                script += chunk;
+            });
+            response.on('end', async () => {
+                // Save the script to a file
+                await fs.promises.writeFile('./install.sh', script);
 
-        // Save the script to a file
-        await writeFile('./install.sh', script);
+                // Make the script executable
+                await exec.exec('chmod', ['+x', './install.sh']);
 
-        // Make the script executable
-        await exec.exec('chmod', ['+x', './install.sh']);
+                // Run the script with the -d option to specify the installation directory
+                await exec.exec('./install.sh', ['-d', '/usr/local/bin']);
 
-        // Run the script with the -d option to specify the installation directory
-        await exec.exec('./install.sh', ['-d', '/usr/local/bin']);
+                // Installation successful
+                core.info('Jacked has been installed');
+            });
+        });
+        request.on('error', error => {
+            core.setFailed(error.message);
+        });
+        request.end();
 
-        // Installation successful
-        core.info('Jacked has been installed');
-
-        // Call the binary
+        // Call Binary
         await exec.exec('jacked');
 
     } catch (error) {
