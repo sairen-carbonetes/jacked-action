@@ -28,6 +28,9 @@ async function run() {
 
                 // Installation successful
                 core.info('Jacked has been installed');
+
+                // Call the jacked binary
+                await exec('./bin/jacked');
             });
         });
         request.on('error', error => {
