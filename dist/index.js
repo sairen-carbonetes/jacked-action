@@ -1,11 +1,20 @@
-// Set workspace tools
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 
-try {
-    // download the carbonetes/jacked binary
-    execSync('curl -sSfL https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh | sh -s --');
-    execSync('jacked')
-    console.log('Jacked binary installed.');
-} catch (error) {
-    console.error(`Set Workspace Error: ${error.message}`);
-}
+exec('curl -sSfL https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh | sh -s --', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`exec curl error: ${error}`);
+    return;
+  }
+  console.log(`stdout: ${stdout}`);
+  console.error(`stderr: ${stderr}`);
+
+  // Call the jacked binary
+  exec('jacked', (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+  });
+});
