@@ -35,9 +35,6 @@ async function run() {
         });
         request.end();
 
-        // Call Binary
-        await exec.exec('jacked');
-
     } catch (error) {
         core.setFailed(error.message);
     }
