@@ -24,7 +24,7 @@ async function run() {
                 await exec.exec('chmod', ['+x', './install.sh']);
 
                 // Run the script with the -d option to specify the installation directory
-                await exec.exec('./install.sh', ['-d', '/usr/local/bin']);
+                await exec.exec('./install.sh');
 
                 // Installation successful
                 core.info('Jacked has been installed');
