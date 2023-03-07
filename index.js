@@ -1,5 +1,11 @@
+const fetch = require('node-fetch');
+const fs = require('fs');
+const util = require('util');
+const writeFile = util.promisify(fs.writeFile);
+// NPM
 const core = require('@actions/core');
 const exec = require('@actions/exec');
+
 
 const cmdExec = require('node:child_process');
 
