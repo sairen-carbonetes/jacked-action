@@ -11,19 +11,23 @@ async function run() {
     try {
         console.log("User directory input: ", directory)
         // Download and install the script
-        await cmdExec(curlArgs, (err, stdout, stderr) => {
-            if (err) {
-                console.error("curl cmdExec Error: ", err);
-                return;
-            }
-            console.log(stdout);
-        });
+        await downloadBinary();
 
         // Call the binary
         await exec.exec('jacked');
     } catch (error) {
         core.setFailed(error.message);
     }
+}
+
+downloadBinary() {
+    cmdExec(curlArgs, (err, stdout, stderr) => {
+        if (err) {
+            console.error("curl cmdExec Error: ", err);
+            return;
+        }
+        console.log(stdout);
+    });
 }
 
 run();
