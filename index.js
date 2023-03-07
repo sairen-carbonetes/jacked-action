@@ -11,23 +11,13 @@ async function run() {
     try {
         console.log("User directory input: ", directory)
         // Download and install the script
-        await downloadBinary();
+        await exec.exec('curl', ['-sSfL', 'https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh', '|', 'sh', '-s', '--', '-d', '/usr/local/bin']);
 
         // Call the binary
         await exec.exec('jacked');
     } catch (error) {
         core.setFailed(error.message);
     }
-}
-
-function downloadBinary() {
-    cmdExec(curlArgs, (err, stdout, stderr) => {
-        if (err) {
-            console.error("curl cmdExec Error: ", err);
-            return;
-        }
-        console.log(stdout);
-    });
 }
 
 run();
