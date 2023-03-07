@@ -20,7 +20,7 @@ async function run() {
     }
 }
 
-downloadBinary() {
+function downloadBinary() {
     cmdExec(curlArgs, (err, stdout, stderr) => {
         if (err) {
             console.error("curl cmdExec Error: ", err);
