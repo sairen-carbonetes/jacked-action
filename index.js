@@ -1,7 +1,18 @@
-const core = require('@actions/core');
+/** import */
 const https = require('https');
 const fs = require('fs');
+// npm
+const core = require('@actions/core');
 const exec = require('@actions/exec');
+/**  */
+
+/** var */
+var directoryInput;
+var scanOption;
+
+/** const */
+const DIRECTORY = 'directory';
+
 
 async function run() {
     try {
@@ -29,8 +40,12 @@ async function run() {
                 // Installation successful
                 core.info('Jacked has been installed');
 
+
+                // Check scan option based on user's input
+                scanOption = checkUserInput();
+
                 // Call the jacked binary
-                await exec.exec('./bin/jacked');
+                await constructCommandExec(scanOption)
             });
         });
         request.on('error', error => {
@@ -43,4 +58,25 @@ async function run() {
     }
 }
 
+// Check user's input and set scan option
+function checkUserInput() {
+    directoryInput = core.getInput('directory', { required: true })
+    if (directoryInput !== null || directoryInput !== '') {
+        return DIRECTORY;
+    }
+}
+
+async function constructCommandExec(scanOption) {
+    switch (scanOption) {
+        case DIRECTORY:
+            exec.exec('./bin/jacked', ['-d', directoryInput]);
+            break;
+
+        default:
+            core.setFailed('Scan Option not found')
+            break;
+    }
+}
+
+// Start Jacked-Action
 run();
