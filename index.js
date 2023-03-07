@@ -2,16 +2,20 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 
 const cmdExec = require('node:child_process');
-const curlArgs = "curl -sSfL https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh | sh -s --"
+const url = "https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh"
 
 // Get input
 const directory = core.getInput('directory', { required: true })
 
 async function run() {
     try {
-        console.log("User directory input: ", directory)
         // Download and install the script
-        await exec.exec('curl', ['-sSfL', 'https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh', '|', 'sh', '-s', '--', '-d', '/usr/local/bin']);
+        await exec.exec('curl', ['-sSfL', url, '|', 'sh']);
+        await exec.exec('chmod', ['+x', 'script.sh']);
+        await exec.exec('sudo', ['bash', './script.sh']);
+
+        // Installation successful
+        core.info('Script has been installed');
 
         // Call the binary
         await exec.exec('jacked');
