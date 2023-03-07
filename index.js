@@ -8,7 +8,7 @@ async function run() {
     try {
         console.log("User directory input: ", directory)
         // Download and install the script
-        await exec.exec('curl', ['-sSfL', 'https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh', '|', 'sh', '-s', '--']);
+        await exec.exec('curl', ['-sSfL', 'https://raw.githubusercontent.com/carbonetes/jacked/main/install.sh', '|', 'bash']);
 
         // Call the binary
         await exec.exec('jacked');
