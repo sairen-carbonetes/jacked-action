@@ -3,8 +3,14 @@ description: Jacked provides organizations with a more comprehensive look at the
 author: Carbonetes
 inputs:
   directory:
-    required: true
     description: The path directory to scan.
+    required: true
+  fail-build:
+    description: Set to false to avoid action from failing based on input fail-criteria severity.
+    required: false
+  fail-criteria:
+    description: 'Optionally specify the minimum vulnerability severity to trigger an "error".  Valid choices are "negligible", "low", "medium", "high" and "critical".'
+    required: false
 runs:
   using: node16
   main: index.js

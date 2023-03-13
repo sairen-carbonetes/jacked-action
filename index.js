@@ -9,10 +9,12 @@ const exec = require('@actions/exec');
 /** var */
 var directoryInput;
 var scanOption;
+var failBuild;
+var failCriteria;
 
 /** const */
 const DIRECTORY = 'directory';
-
+const SEVERITY_TYPE = ["unknown", "negligible", "low", "medium", "high", "critical"];
 
 async function run() {
     try {
@@ -28,6 +30,7 @@ async function run() {
                 script += chunk;
             });
             response.on('end', async () => {
+
                 // Save the script to a file
                 await fs.promises.writeFile('./install.sh', script);
 
@@ -66,10 +69,27 @@ function checkUserInput() {
     }
 }
 
+// Pre-run user input validity check
+function checkConfig() {
+    failBuild = core.getInput('fail-build')
+    failCriteria = core.getInput('fail-criteria')
+
+    // Check if user input fail-criteria is valid
+    if (!SEVERITY_TYPE.some(
+            (severity) => typeof failCriteria.toLowerCase() === "string" && severity === failCriteria.toLowerCase()
+        )
+    ) {
+        throw new Error(
+            `Undefined Severity ${failCriteria} -> Please choose: unknown, negligible, low, medium, high, or critical`
+        )
+    }
+
+}
+
 async function constructCommandExec(scanOption) {
     switch (scanOption) {
         case DIRECTORY:
-            exec.exec('./bin/jacked', ['-d', directoryInput]);
+            exec.exec('./bin/jacked', ['-q', '-g', directoryInput]);
             break;
 
         default:
@@ -78,5 +98,10 @@ async function constructCommandExec(scanOption) {
     }
 }
 
+/** Pre-run */ 
+// User input validity check
+checkConfig();
+
+/** Run */ 
 // Start Jacked-Action
 run();
