@@ -1,4 +1,5 @@
 /** import */
+import { SeverityCheck } from 'validations/severity.js';
 const https = require('https');
 const fs = require('fs');
 // npm
@@ -16,6 +17,11 @@ var failCriteria;
 const DIRECTORY = 'directory';
 const SEVERITY_TYPE = ["unknown", "negligible", "low", "medium", "high", "critical"];
 
+
+
+
+
+/** run start */
 async function run() {
     try {
         // Download the script using https
@@ -68,28 +74,26 @@ function checkUserInput() {
         return DIRECTORY;
     }
 }
+/** run end */
 
+
+
+
+/** pre-run start */
 // Pre-run user input validity check
 function checkConfig() {
     failBuild = core.getInput('fail-build')
     failCriteria = core.getInput('fail-criteria')
-
-    // Check if user input fail-criteria is valid
-    if (!SEVERITY_TYPE.some(
-            (severity) => typeof failCriteria.toLowerCase() === "string" && severity === failCriteria.toLowerCase()
-        )
-    ) {
-        throw new Error(
-            `Undefined Severity ${failCriteria} -> Please choose: unknown, negligible, low, medium, high, or critical`
-        )
-    }
+    
+    SeverityCheck(failCriteria, SEVERITY_TYPE)
 
 }
+/** pre-run-end */
 
 async function constructCommandExec(scanOption) {
     switch (scanOption) {
         case DIRECTORY:
-            exec.exec('./bin/jacked', ['-q', '-g', directoryInput]);
+            exec.exec('./bin/jacked', ['-q', '-d', directoryInput]);
             break;
 
         default:
@@ -97,6 +101,19 @@ async function constructCommandExec(scanOption) {
             break;
     }
 }
+
+/** pre-run end */
+
+
+
+
+
+
+
+
+
+
+
 
 /** Pre-run */ 
 // User input validity check
